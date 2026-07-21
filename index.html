@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2310191d'/%3E%3Cpath d='M8 9h5v9c0 3 1 4 3 4s3-1 3-4V9h5v10c0 5-3 8-8 8s-8-3-8-8z' fill='%2300a7bd'/%3E%3C/svg%3E">
+  <title>OSU1 Updater 监测历史</title>
+  <style>
+:root { color-scheme: light; --ink:#172126; --muted:#5d6b72; --line:#d9e0e3; --paper:#ffffff;
+  --soft:#f4f7f8; --accent:#007c91; --ok:#176b45; --warn:#a52a2a; --warn-bg:#fff2f1; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
+a { color:var(--accent); overflow-wrap:anywhere; }
+.topbar { border-bottom:4px solid var(--accent); background:#10191d; color:white; }
+.topbar-inner, main, footer { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
+.topbar-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { font-size:20px; font-weight:700; }
+.subtitle { color:#b9c7cc; font-size:13px; }
+main { padding:28px 0 48px; }
+h1 { font-size:28px; line-height:1.2; margin:0 0 8px; }
+h2 { font-size:19px; margin:32px 0 10px; border-bottom:1px solid var(--line); padding-bottom:7px; }
+p { margin:7px 0; }
+.lede { color:var(--muted); margin-bottom:24px; }
+.stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--line); }
+.stat { min-width:0; padding:14px 16px; border-right:1px solid var(--line); background:var(--soft); }
+.stat:last-child { border-right:0; }
+.stat-label { color:var(--muted); font-size:12px; }
+.stat-value { display:block; margin-top:3px; font-size:18px; font-weight:700; overflow-wrap:anywhere; }
+.notice { border-left:4px solid var(--ok); background:#edf8f2; padding:12px 14px; margin:20px 0; }
+.notice.warning { border-color:var(--warn); background:var(--warn-bg); }
+.notice strong { display:block; }
+.anomaly { padding:11px 0; border-bottom:1px solid #f0c9c5; }
+.anomaly:last-child { border-bottom:0; }
+.table-wrap { overflow-x:auto; border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; min-width:760px; }
+th, td { padding:9px 11px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
+th { background:var(--soft); color:#39484f; font-size:12px; white-space:nowrap; }
+tbody tr:last-child td { border-bottom:0; }
+code { font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
+.status { font-weight:700; }
+.status.ok { color:var(--ok); }
+.status.warning, .change-modified, .change-removed { color:var(--warn); }
+.change-added { color:var(--ok); }
+.muted { color:var(--muted); }
+details { border:1px solid var(--line); padding:11px 13px; }
+summary { cursor:pointer; font-weight:650; }
+footer { border-top:1px solid var(--line); color:var(--muted); padding:20px 0 32px; }
+@media (max-width:760px) {
+  .topbar-inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; gap:2px; }
+  .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .stat:nth-child(2) { border-right:0; }
+  .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+  h1 { font-size:24px; }
+}
+@media (max-width:480px) {
+  .stats { grid-template-columns:1fr; }
+  .stat { border-right:0; border-bottom:1px solid var(--line); }
+  .stat:last-child { border-bottom:0; }
+}
+</style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD 内容与 SP 固件版本监测</div></div><span class="subtitle">静态监测报告</span></div></header>
+  <main><h1>OSU1 Updater 监测历史</h1><p class="lede">每个新的 Package Version 或内容指纹保留一份独立静态报告。</p><div class="stats"><div class="stat"><span class="stat-label">最新 Package</span><span class="stat-value">32778.0.26100.8866</span></div><div class="stat"><span class="stat-label">预期 OS</span><span class="stat-value">10.0.26100.8866</span></div><div class="stat"><span class="stat-label">新增 / 修改 / 删除</span><span class="stat-value">0 / 0 / 0</span></div><div class="stat"><span class="stat-label">异常</span><span class="stat-value">0</span></div></div><h2>快照</h2><div class="table-wrap"><table><thead><tr><th>Package / 快照</th><th>预期 OS</th><th>新增 / 修改 / 删除</th><th>校验</th><th>时间</th></tr></thead><tbody><tr><td><a href="updates/32778.0.26100.8866-7518d4b0f1bb.html">32778.0.26100.8866</a><br><code>32778.0.26100.8866-7518d4b0f1bb</code></td><td>10.0.26100.8866</td><td>0 / 0 / 0</td><td><span class="status ok">通过</span></td><td>2026-07-17T11:50:13+00:00</td></tr></tbody></table></div></main>
+  <footer>报告由仓库内确定性清单和 pysp 解析结果生成；未知代号不会自动推断。</footer>
+</body>
+</html>
