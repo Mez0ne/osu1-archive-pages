@@ -93,6 +93,9 @@ summary { cursor:pointer; font-weight:650; }
 .file-result h3 { margin:15px 0 5px; font-size:13px; }
 .lifecycle-list, .file-version-list { margin:0; padding-left:20px; }
 .lifecycle-list li { margin:4px 0; }
+.file-versions { margin-top:14px; border:0; padding:0; }
+.file-versions summary { width:fit-content; color:var(--accent); }
+.file-versions[open] summary { margin-bottom:5px; }
 .file-version-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:24px; }
 .file-version-list li { min-width:0; margin:4px 0; }
 .file-version-meta { display:block; color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
@@ -242,11 +245,14 @@ summary { cursor:pointer; font-weight:650; }
     });
     article.append(lifecycleHeading, lifecycleList);
 
-    const versionsHeading = document.createElement("h3");
-    versionsHeading.textContent = "出现版本";
+    const versions = Array.isArray(file.versions) ? file.versions : [];
+    const versionsDetails = document.createElement("details");
+    versionsDetails.className = "file-versions";
+    const versionsSummary = document.createElement("summary");
+    versionsSummary.textContent = `出现版本（${versions.length}）`;
     const versionList = document.createElement("ul");
     versionList.className = "file-version-list";
-    (file.versions || []).forEach((observation) => {
+    versions.forEach((observation) => {
       const item = document.createElement("li");
       appendSnapshotLink(item, observation, duplicateLabels);
       const metadata = document.createElement("span");
@@ -256,7 +262,8 @@ summary { cursor:pointer; font-weight:650; }
       item.append(metadata);
       versionList.append(item);
     });
-    article.append(versionsHeading, versionList);
+    versionsDetails.append(versionsSummary, versionList);
+    article.append(versionsDetails);
     return article;
   }
 
