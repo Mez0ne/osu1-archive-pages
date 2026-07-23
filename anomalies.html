@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2310191d'/%3E%3Cpath d='M8 9h5v9c0 3 1 4 3 4s3-1 3-4V9h5v10c0 5-3 8-8 8s-8-3-8-8z' fill='%2300a7bd'/%3E%3C/svg%3E">
+  <link rel="alternate" hreflang="zh-CN" href="anomalies.html"><link rel="alternate" hreflang="en" href="en/anomalies.html"><link rel="alternate" hreflang="x-default" href="anomalies.html">
+  <title>异常与待确认项</title>
+  <style>
+:root { color-scheme: light; --ink:#172126; --muted:#5d6b72; --line:#d9e0e3; --paper:#ffffff;
+  --soft:#f4f7f8; --accent:#007c91; --ok:#176b45; --modified:#875600;
+  --warn:#a52a2a; --warn-bg:#fff2f1; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
+a { color:var(--accent); overflow-wrap:anywhere; }
+.topbar { border-bottom:4px solid var(--accent); background:#10191d; color:white; }
+.topbar-inner, main { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
+.topbar-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { font-size:20px; font-weight:700; }
+.subtitle { color:#b9c7cc; font-size:13px; }
+.topbar-actions { display:flex; align-items:center; justify-content:flex-end; gap:18px; }
+.language-switch { color:#fff; font-size:13px; font-weight:650; white-space:nowrap; }
+.language-switch:focus-visible { outline:3px solid #57c8d8; outline-offset:3px; }
+main { padding:28px 0 48px; }
+h1 { font-size:28px; line-height:1.2; margin:0 0 8px; }
+h2 { font-size:19px; margin:32px 0 10px; border-bottom:1px solid var(--line); padding-bottom:7px; }
+p { margin:7px 0; }
+.lede { color:var(--muted); margin-bottom:24px; }
+.stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--line); }
+.stat { min-width:0; padding:14px 16px; border-right:1px solid var(--line); background:var(--soft); }
+.stat:last-child { border-right:0; }
+.stat-label { color:var(--muted); font-size:12px; }
+.stat-value { display:block; margin-top:3px; font-size:18px; font-weight:700; overflow-wrap:anywhere; }
+.stat-detail { display:block; margin-top:1px; color:var(--muted); font-size:12px; }
+.notice { border-left:4px solid var(--ok); background:#edf8f2; padding:12px 14px; margin:20px 0; }
+.notice.warning { border-color:var(--warn); background:var(--warn-bg); }
+.notice strong { display:block; }
+.anomaly { padding:11px 0; border-bottom:1px solid #f0c9c5; }
+.anomaly:last-child { border-bottom:0; }
+.table-wrap { overflow-x:auto; border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; min-width:760px; }
+th, td { padding:9px 11px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
+th { background:var(--soft); color:#39484f; font-size:12px; white-space:nowrap; }
+tbody tr:last-child td { border-bottom:0; }
+code { font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
+.status { font-weight:700; }
+.status.ok { color:var(--ok); }
+.status.warning, .change-removed { color:var(--warn); }
+.change-added { color:var(--ok); }
+.change-modified { color:var(--modified); }
+.change-section-title { border-bottom-color:currentColor; }
+.muted { color:var(--muted); }
+.firmware-versions { display:inline-flex; min-width:0; flex-direction:column; gap:2px; font-variant-numeric:tabular-nums; }
+.firmware-version { display:grid; grid-template-columns:58px minmax(0,1fr); gap:7px; }
+.firmware-version-label { color:var(--muted); font-size:11px; font-weight:650; }
+.version-stack { display:inline-flex; min-width:0; flex-direction:column; gap:1px; font-variant-numeric:tabular-nums; }
+.version-detail { color:var(--muted); font-size:12px; font-weight:500; line-height:1.4; overflow-wrap:anywhere; }
+details { border:1px solid var(--line); padding:11px 13px; }
+summary { cursor:pointer; font-weight:650; }
+@media (max-width:760px) {
+  .topbar-inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; gap:2px; }
+  .topbar-actions { width:100%; justify-content:space-between; gap:16px; margin-top:5px; }
+  .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .stat:nth-child(2) { border-right:0; }
+  .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+  .history-wrap { overflow:visible; border:0; }
+  .history-table { min-width:0; }
+  .history-table thead { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .history-table tbody { display:grid; gap:12px; }
+  .history-table tr { display:block; border:1px solid var(--line); }
+  .history-table td { display:grid; grid-template-columns:96px minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); }
+  .history-table tbody tr:last-child td { border-bottom:1px solid var(--line); }
+  .history-table td::before { content:attr(data-label); color:var(--muted); font-size:12px; font-weight:650; }
+  .history-table td:first-child { display:block; background:var(--soft); font-size:16px; font-weight:700; }
+  .history-table td:first-child::before { display:none; }
+  .history-table tbody tr td:last-child { border-bottom:0; }
+  h1 { font-size:24px; }
+}
+@media (max-width:480px) {
+  .stats { grid-template-columns:1fr; }
+  .stat { border-right:0; border-bottom:1px solid var(--line); }
+  .stat:last-child { border-bottom:0; }
+}
+
+.file-controls { display:grid; grid-template-columns:minmax(240px,1fr) 160px 160px 220px; gap:12px;
+  align-items:end; margin:24px 0 0; }
+.control-field { min-width:0; }
+.control-label { display:block; margin-bottom:5px; color:var(--muted); font-size:12px; font-weight:650; }
+.control-input, .control-select { width:100%; min-height:42px; border:1px solid #aebbc0; border-radius:4px;
+  padding:8px 11px; background:#fff; color:var(--ink);
+  font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
+.control-input { font-size:16px; }
+.control-input:focus, .control-select:focus { border-color:var(--accent); outline:3px solid #ccebf0; outline-offset:1px; }
+.file-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:43px; }
+.file-result-status { margin:9px 0; color:var(--muted); font-size:13px; }
+.file-reset { border:0; padding:4px 0; background:transparent; color:var(--accent); cursor:pointer; font:650 13px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
+.file-reset:focus-visible { outline:3px solid #ccebf0; outline-offset:2px; }
+.file-inventory { border:1px solid var(--line); }
+.file-inventory-head, .file-summary-grid { display:grid;
+  grid-template-columns:minmax(260px,1.8fr) 80px 90px minmax(210px,1fr) 110px;
+  align-items:center; gap:12px; }
+.file-inventory-head { padding:8px 12px 8px 34px; background:var(--soft); color:#39484f; font-size:12px; font-weight:650; }
+.file-entry { border:0; border-bottom:1px solid var(--line); padding:0; }
+.file-entry:last-child { border-bottom:0; }
+.file-entry > summary { min-height:48px; padding:10px 12px; cursor:pointer; }
+.file-entry[open] > summary { background:#f8fafb; }
+.file-summary-grid { min-width:0; }
+.file-summary-path { min-width:0; font-weight:650; }
+.file-summary-path code { font-size:13px; }
+.file-summary-kind, .file-summary-count, .file-summary-range { color:var(--muted); font-size:12px; }
+.file-summary-count { font-variant-numeric:tabular-nums; }
+.file-summary-range { overflow-wrap:anywhere; }
+.file-entry-state { font-weight:700; }
+.file-entry-state.present { color:var(--ok); }
+.file-entry-state.absent { color:var(--warn); }
+.file-reappeared { display:block; color:var(--modified); font-size:11px; font-weight:650; }
+.file-entry-body { padding:14px 16px 18px 34px; border-top:1px solid var(--line); background:#fff; }
+.file-variants { color:var(--muted); font-size:12px; }
+.file-entry-body h2 { margin:18px 0 7px; padding:0; border:0; font-size:14px; }
+.file-entry-body h2:first-of-type { margin-top:12px; }
+.lifecycle-list, .file-version-list { margin:0; padding-left:20px; }
+.lifecycle-list li { margin:4px 0; }
+.file-versions { margin-top:16px; border:0; padding:0; }
+.file-versions > summary { width:fit-content; color:var(--accent); }
+.file-versions[open] > summary { margin-bottom:6px; }
+.file-version-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:24px; }
+.file-version-list li { min-width:0; margin:4px 0; }
+.file-version-meta { display:block; color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
+.file-empty { padding:28px 16px; color:var(--muted); text-align:center; }
+@media (max-width:900px) {
+  .file-controls { grid-template-columns:minmax(0,1fr) minmax(150px,.45fr); }
+  .file-inventory-head, .file-summary-grid {
+    grid-template-columns:minmax(220px,1.5fr) 70px 80px minmax(180px,1fr) 100px;
+    gap:9px;
+  }
+}
+@media (max-width:760px) {
+  .file-controls { grid-template-columns:1fr 1fr; }
+  .file-controls .control-field:first-child { grid-column:1 / -1; }
+  .file-inventory-head { display:none; }
+  .file-entry > summary { padding:11px 12px; }
+  .file-summary-grid { grid-template-columns:minmax(0,1fr) auto auto; gap:5px 12px; }
+  .file-summary-path { grid-column:1 / -1; }
+  .file-summary-range { grid-column:1 / -1; grid-row:3; }
+  .file-summary-kind { grid-column:1; grid-row:2; }
+  .file-summary-count { grid-column:2; grid-row:2; }
+  .file-summary-state { grid-column:3; grid-row:2; text-align:right; }
+  .file-entry-body { padding:12px 12px 16px 28px; }
+  .file-version-list { grid-template-columns:1fr; }
+}
+@media (max-width:480px) {
+  .file-controls { grid-template-columns:1fr; }
+  .file-controls .control-field:first-child { grid-column:auto; }
+  .file-toolbar { align-items:flex-start; flex-direction:column; gap:0; }
+}
+
+.anomaly-controls { display:grid; grid-template-columns:minmax(240px,1fr) 190px 230px; gap:12px;
+  align-items:end; margin:24px 0 0; }
+.anomaly-list { border:1px solid var(--line); }
+.anomaly-entry { border:0; border-bottom:1px solid var(--line); padding:0; }
+.anomaly-entry:last-child { border-bottom:0; }
+.anomaly-entry[hidden] { display:none; }
+.anomaly-entry > summary { min-height:52px; padding:10px 12px; cursor:pointer; }
+.anomaly-entry[open] > summary { background:#f8fafb; }
+.anomaly-summary-grid { display:grid; grid-template-columns:minmax(260px,1.5fr) minmax(180px,1fr) 90px 220px 90px;
+  align-items:center; gap:12px; }
+.anomaly-title { min-width:0; font-weight:700; }
+.anomaly-title code { display:block; margin-top:3px; color:var(--muted); font-size:11px; font-weight:500; }
+.anomaly-code, .anomaly-count, .anomaly-range { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
+.anomaly-state { font-weight:700; }
+.anomaly-state.active { color:var(--warn); }
+.anomaly-state.resolved { color:var(--ok); }
+.anomaly-body { padding:14px 16px 18px 34px; border-top:1px solid var(--line); }
+.anomaly-body p { margin:0 0 10px; }
+.anomaly-occurrences { margin:8px 0 0; padding-left:20px; columns:2; column-gap:28px; }
+.anomaly-occurrences li { margin:4px 0; break-inside:avoid; }
+.anomaly-empty { padding:28px 16px; color:var(--muted); text-align:center; }
+@media (max-width:900px) {
+  .anomaly-controls { grid-template-columns:minmax(0,1fr) minmax(160px,.5fr); }
+  .anomaly-controls .control-field:first-child { grid-column:1 / -1; }
+  .anomaly-summary-grid { grid-template-columns:minmax(220px,1.4fr) minmax(150px,1fr) 80px 170px 80px; gap:9px; }
+}
+@media (max-width:760px) {
+  .anomaly-summary-grid { grid-template-columns:minmax(0,1fr) auto; gap:5px 12px; }
+  .anomaly-title { grid-column:1 / -1; }
+  .anomaly-code { grid-column:1; }
+  .anomaly-count { grid-column:2; text-align:right; }
+  .anomaly-range { grid-column:1 / -1; }
+  .anomaly-state { grid-column:2; grid-row:3; text-align:right; }
+  .anomaly-body { padding:12px 12px 16px 28px; }
+  .anomaly-occurrences { columns:1; }
+}
+@media (max-width:480px) {
+  .anomaly-controls { grid-template-columns:1fr; }
+  .anomaly-controls .control-field:first-child { grid-column:auto; }
+}
+</style>
+  <script>
+(() => {
+  "use strict";
+  const currentLocale = "zh-CN";
+  const targetLocale = "en";
+  const alternateHref = "en/anomalies.html";
+  const storageKey = "osu1-archive-language";
+
+  function alternateUrl() {
+    const url = new URL(alternateHref, location.href);
+    url.search = location.search;
+    url.hash = location.hash;
+    return url.href;
+  }
+
+  let storedLocale = "";
+  try {
+    storedLocale = localStorage.getItem(storageKey) || "";
+  } catch (_error) {
+    storedLocale = "";
+  }
+  if (storedLocale !== "zh-CN" && storedLocale !== "en") storedLocale = "";
+  if (currentLocale === "zh-CN") {
+    const browserLocale = String(
+      (navigator.languages && navigator.languages[0]) || navigator.language || ""
+    ).toLowerCase();
+    const wantsEnglish = storedLocale === "en"
+      || (!storedLocale && !browserLocale.startsWith("zh"));
+    if (wantsEnglish) location.replace(alternateUrl());
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const control = document.querySelector("[data-language-switch]");
+    if (!control) return;
+    control.addEventListener("click", (event) => {
+      event.preventDefault();
+      try {
+        localStorage.setItem(storageKey, targetLocale);
+      } catch (_error) {
+        // The explicit language URL still works when storage is unavailable.
+      }
+      location.assign(alternateUrl());
+    });
+  });
+})();
+</script>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD 内容与 SP 固件版本监测</div></div><div class="topbar-actions"><a href="index.html">返回历史索引</a><a class="language-switch" href="en/anomalies.html" hreflang="en" data-language-switch aria-label="Switch to English">English</a></div></div></header>
+  <main><h1>异常与待确认项</h1><p class="lede">汇总所有快照中出现过的版本差异、未知缩写与待确认映射。</p><div class="stats"><div class="stat"><span class="stat-label">异常类型</span><span class="stat-value">8 项</span></div><div class="stat"><span class="stat-label">当前仍出现</span><span class="stat-value status warning">0 项</span></div><div class="stat"><span class="stat-label">历史已消失</span><span class="stat-value status ok">8 项</span></div><div class="stat"><span class="stat-label">涉及快照</span><span class="stat-value">10 份</span></div></div><div class="anomaly-controls" aria-label="异常筛选"><div class="control-field"><label class="control-label" for="anomaly-filter-input">名称或路径</label><input class="control-input" id="anomaly-filter-input" type="search" placeholder="异常与待确认项" autocomplete="off" spellcheck="false"></div><div class="control-field"><label class="control-label" for="anomaly-state-filter">状态</label><select class="control-select" id="anomaly-state-filter"><option value="all">全部状态 (8)</option><option value="active">当前仍出现 (0)</option><option value="resolved">历史已消失 (8)</option></select></div><div class="control-field"><label class="control-label" for="anomaly-code-filter">异常代码</label><select class="control-select" id="anomaly-code-filter"><option value="all">全部类型 (8)</option><option value="durango_one_sp_major_mismatch">durango_one_sp_major_mismatch (1)</option><option value="durango_two_sp_version_mismatch">durango_two_sp_version_mismatch (5)</option><option value="scarlett_one_sp_major_mismatch">scarlett_one_sp_major_mismatch (1)</option><option value="scarlett_two_sp_version_mismatch">scarlett_two_sp_version_mismatch (1)</option></select></div></div><p class="file-result-status" id="anomaly-result-status" aria-live="polite" data-template="{matches} / {total} 项异常"></p><div class="anomaly-list" id="anomaly-list"><details class="anomaly-entry" data-state="resolved" data-code="durango_one_sp_major_mismatch" data-search="durango_one_sp_major_mismatch
+durango 组内 1sp major 不一致
+检测到多个版本: 10, 9。
+bootabd.bin
+bootkbd.bin
+bootmbd.bin
+bootnad.bin
+bootnbd.bin
+bootobd.bin
+bootvbd.bin
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;1sp major&quot;, &quot;values&quot;: &quot;10, 9&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Durango 组内 1SP major 不一致<code>5eed7db760f74967</code></span><span class="anomaly-code">durango_one_sp_major_mismatch</span><span class="anomaly-count">8 次</span><span class="anomaly-range">10.0.15063.3054 → 10.0.16299.5101</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 10, 9。</p><p class="muted">相关文件： <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>出现快照（8）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.3054-42c2085ead94.html">10.0.15063.3054</a></li><li><a href="updates/32778.0.15063.4082-2a7c70b15045.html">10.0.15063.4082</a></li><li><a href="updates/32778.0.15063.4103-98d397b0ec94.html">10.0.15063.4103</a></li><li><a href="updates/32778.0.16299.3031-fa00cf935910.html">10.0.16299.3031</a></li><li><a href="updates/32778.0.16299.3036-a3c51e1b1fc0.html">10.0.16299.3036</a></li><li><a href="updates/32778.0.16299.4037-916821b349eb.html">10.0.16299.4037</a></li><li><a href="updates/32778.0.16299.4055-edff8fe79bc3.html">10.0.16299.4055</a></li><li><a href="updates/32778.0.16299.5101-b5d2eecdbf2f.html">10.0.16299.5101</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+durango 组内 2sp 不一致
+检测到多个版本: 10.0.1060, 9.3.1028。
+bootabd.bin
+bootkbd.bin
+bootmbd.bin
+bootnad.bin
+bootobd.bin
+bootvbd.bin
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1060, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Durango 组内 2SP 不一致<code>54818321e8f1f5c4</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 次</span><span class="anomaly-range">10.0.15063.3054</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 10.0.1060, 9.3.1028。</p><p class="muted">相关文件： <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>出现快照（1）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.3054-42c2085ead94.html">10.0.15063.3054</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+durango 组内 2sp 不一致
+检测到多个版本: 10.0.1084, 9.3.1028。
+bootabd.bin
+bootkbd.bin
+bootmbd.bin
+bootnad.bin
+bootnbd.bin
+bootobd.bin
+bootvbd.bin
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1084, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Durango 组内 2SP 不一致<code>a4cd92222514143f</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 次</span><span class="anomaly-range">10.0.15063.4082</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 10.0.1084, 9.3.1028。</p><p class="muted">相关文件： <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>出现快照（1）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.4082-2a7c70b15045.html">10.0.15063.4082</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+durango 组内 2sp 不一致
+检测到多个版本: 9.3.1028, 9.3.1048。
+bootabd.bin
+bootkbd.bin
+bootmbd.bin
+bootnad.bin
+bootvbd.bin
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;9.3.1028, 9.3.1048&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Durango 组内 2SP 不一致<code>d2c42e9e4f0dfc3a</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 次</span><span class="anomaly-range">10.0.15063.2019</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 9.3.1028, 9.3.1048。</p><p class="muted">相关文件： <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootvbd.bin</code></p><strong>出现快照（1）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.2019-af07d4b782e4.html">10.0.15063.2019</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+durango 组内 2sp 不一致
+检测到多个版本: 10.0.1091, 9.3.1028。
+bootabd.bin
+bootkbd.bin
+bootmbd.bin
+bootnad.bin
+bootnbd.bin
+bootobd.bin
+bootvbd.bin
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1091, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Durango 组内 2SP 不一致<code>d45377319af5d509</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 次</span><span class="anomaly-range">10.0.15063.4103</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 10.0.1091, 9.3.1028。</p><p class="muted">相关文件： <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>出现快照（1）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.4103-98d397b0ec94.html">10.0.15063.4103</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+durango 组内 2sp 不一致
+检测到多个版本: 10.0.1094, 9.3.1033。
+bootabd.bin
+bootkbd.bin
+bootmbd.bin
+bootnad.bin
+bootnbd.bin
+bootobd.bin
+bootvbd.bin
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1094, 9.3.1033&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Durango 组内 2SP 不一致<code>ed70b812e775e9f4</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">5 次</span><span class="anomaly-range">10.0.16299.3031 → 10.0.16299.5101</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 10.0.1094, 9.3.1033。</p><p class="muted">相关文件： <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>出现快照（5）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.16299.3031-fa00cf935910.html">10.0.16299.3031</a></li><li><a href="updates/32778.0.16299.3036-a3c51e1b1fc0.html">10.0.16299.3036</a></li><li><a href="updates/32778.0.16299.4037-916821b349eb.html">10.0.16299.4037</a></li><li><a href="updates/32778.0.16299.4055-edff8fe79bc3.html">10.0.16299.4055</a></li><li><a href="updates/32778.0.16299.5101-b5d2eecdbf2f.html">10.0.16299.5101</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="scarlett_one_sp_major_mismatch" data-search="scarlett_one_sp_major_mismatch
+scarlett 组内 1sp major 不一致
+检测到多个版本: 6, 7。
+bootrad.bin
+bootrbd.bin
+bootsad.bin
+bootsbd.bin
+{&quot;group&quot;: &quot;scarlett&quot;, &quot;label&quot;: &quot;1sp major&quot;, &quot;values&quot;: &quot;6, 7&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Scarlett 组内 1SP major 不一致<code>6a79d78bd8db1f18</code></span><span class="anomaly-code">scarlett_one_sp_major_mismatch</span><span class="anomaly-count">1 次</span><span class="anomaly-range">10.0.19041.6287</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 6, 7。</p><p class="muted">相关文件： <code>bootrad.bin</code> / <code>bootrbd.bin</code> / <code>bootsad.bin</code> / <code>bootsbd.bin</code></p><strong>出现快照（1）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.19041.6287-076ada9795f4.html">10.0.19041.6287</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="scarlett_two_sp_version_mismatch" data-search="scarlett_two_sp_version_mismatch
+scarlett 组内 2sp 不一致
+检测到多个版本: 6.3.2030, 7.3.2073。
+bootrad.bin
+bootrbd.bin
+bootsad.bin
+bootsbd.bin
+{&quot;group&quot;: &quot;scarlett&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;6.3.2030, 7.3.2073&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">Scarlett 组内 2SP 不一致<code>236594e83825fb66</code></span><span class="anomaly-code">scarlett_two_sp_version_mismatch</span><span class="anomaly-count">1 次</span><span class="anomaly-range">10.0.19041.6287</span><span class="anomaly-state resolved">历史</span></span></summary><div class="anomaly-body"><p>检测到多个版本: 6.3.2030, 7.3.2073。</p><p class="muted">相关文件： <code>bootrad.bin</code> / <code>bootrbd.bin</code> / <code>bootsad.bin</code> / <code>bootsbd.bin</code></p><strong>出现快照（1）</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.19041.6287-076ada9795f4.html">10.0.19041.6287</a></li></ol></div></details></div><div class="anomaly-empty" id="anomaly-empty" hidden>没有符合当前条件的异常</div></main>
+  <script>
+(() => {
+  "use strict";
+  const input = document.getElementById("anomaly-filter-input");
+  const state = document.getElementById("anomaly-state-filter");
+  const code = document.getElementById("anomaly-code-filter");
+  const status = document.getElementById("anomaly-result-status");
+  const empty = document.getElementById("anomaly-empty");
+  const entries = Array.from(document.querySelectorAll(".anomaly-entry"));
+  if (!input || !state || !code || !status || !empty) return;
+  const template = status.dataset.template || "{matches} / {total}";
+  function update() {
+    const query = input.value.trim().toLowerCase();
+    let matches = 0;
+    entries.forEach((entry) => {
+      const visible = (!query || String(entry.dataset.search || "").includes(query))
+        && (state.value === "all" || entry.dataset.state === state.value)
+        && (code.value === "all" || entry.dataset.code === code.value);
+      entry.hidden = !visible;
+      if (visible) matches += 1;
+    });
+    status.textContent = template
+      .replace("{matches}", String(matches))
+      .replace("{total}", String(entries.length));
+    empty.hidden = matches !== 0;
+    const params = new URLSearchParams();
+    if (input.value.trim()) params.set("q", input.value.trim());
+    if (state.value !== "all") params.set("status", state.value);
+    if (code.value !== "all") params.set("code", code.value);
+    const queryString = params.toString();
+    history.replaceState(null, "", `${location.pathname}${queryString ? `?${queryString}` : ""}`);
+  }
+  const params = new URLSearchParams(location.search);
+  input.value = params.get("q") || "";
+  if (["active", "resolved"].includes(params.get("status"))) state.value = params.get("status");
+  if (Array.from(code.options).some((item) => item.value === params.get("code"))) {
+    code.value = params.get("code");
+  }
+  input.addEventListener("input", update);
+  state.addEventListener("change", update);
+  code.addEventListener("change", update);
+  update();
+})();
+</script>
+
+</body>
+</html>
