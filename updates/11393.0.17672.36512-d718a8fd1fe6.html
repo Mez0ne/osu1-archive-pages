@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2310191d'/%3E%3Cpath d='M8 9h5v9c0 3 1 4 3 4s3-1 3-4V9h5v10c0 5-3 8-8 8s-8-3-8-8z' fill='%2300a7bd'/%3E%3C/svg%3E">
+  <title>OSU1 6.2.11393.0</title>
+  <style>
+:root { color-scheme: light; --ink:#172126; --muted:#5d6b72; --line:#d9e0e3; --paper:#ffffff;
+  --soft:#f4f7f8; --accent:#007c91; --ok:#176b45; --warn:#a52a2a; --warn-bg:#fff2f1; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
+a { color:var(--accent); overflow-wrap:anywhere; }
+.topbar { border-bottom:4px solid var(--accent); background:#10191d; color:white; }
+.topbar-inner, main { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
+.topbar-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { font-size:20px; font-weight:700; }
+.subtitle { color:#b9c7cc; font-size:13px; }
+main { padding:28px 0 48px; }
+h1 { font-size:28px; line-height:1.2; margin:0 0 8px; }
+h2 { font-size:19px; margin:32px 0 10px; border-bottom:1px solid var(--line); padding-bottom:7px; }
+p { margin:7px 0; }
+.lede { color:var(--muted); margin-bottom:24px; }
+.stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--line); }
+.stat { min-width:0; padding:14px 16px; border-right:1px solid var(--line); background:var(--soft); }
+.stat:last-child { border-right:0; }
+.stat-label { color:var(--muted); font-size:12px; }
+.stat-value { display:block; margin-top:3px; font-size:18px; font-weight:700; overflow-wrap:anywhere; }
+.stat-detail { display:block; margin-top:1px; color:var(--muted); font-size:12px; }
+.notice { border-left:4px solid var(--ok); background:#edf8f2; padding:12px 14px; margin:20px 0; }
+.notice.warning { border-color:var(--warn); background:var(--warn-bg); }
+.notice strong { display:block; }
+.anomaly { padding:11px 0; border-bottom:1px solid #f0c9c5; }
+.anomaly:last-child { border-bottom:0; }
+.table-wrap { overflow-x:auto; border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; min-width:760px; }
+th, td { padding:9px 11px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
+th { background:var(--soft); color:#39484f; font-size:12px; white-space:nowrap; }
+tbody tr:last-child td { border-bottom:0; }
+code { font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
+.status { font-weight:700; }
+.status.ok { color:var(--ok); }
+.status.warning, .change-modified, .change-removed { color:var(--warn); }
+.change-added { color:var(--ok); }
+.muted { color:var(--muted); }
+.version-pair { font-variant-numeric:tabular-nums; }
+details { border:1px solid var(--line); padding:11px 13px; }
+summary { cursor:pointer; font-weight:650; }
+@media (max-width:760px) {
+  .topbar-inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; gap:2px; }
+  .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .stat:nth-child(2) { border-right:0; }
+  .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+  .history-wrap { overflow:visible; border:0; }
+  .history-table { min-width:0; }
+  .history-table thead { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .history-table tbody { display:grid; gap:12px; }
+  .history-table tr { display:block; border:1px solid var(--line); }
+  .history-table td { display:grid; grid-template-columns:96px minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); }
+  .history-table tbody tr:last-child td { border-bottom:1px solid var(--line); }
+  .history-table td::before { content:attr(data-label); color:var(--muted); font-size:12px; font-weight:650; }
+  .history-table td:first-child { display:block; background:var(--soft); font-size:16px; font-weight:700; }
+  .history-table td:first-child::before { display:none; }
+  .history-table tbody tr td:last-child { border-bottom:0; }
+  h1 { font-size:24px; }
+}
+@media (max-width:480px) {
+  .stats { grid-template-columns:1fr; }
+  .stat { border-right:0; border-bottom:1px solid var(--line); }
+  .stat:last-child { border-bottom:0; }
+}
+</style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD 内容与 SP 固件版本监测</div></div><a href="../index.html">返回历史索引</a></div></header>
+  <main><h1>OSU1 6.2.11393.0</h1><p class="lede">XVD Package 原始编码 <code>11393.0.17672.36512</code> · 内部快照 <code>11393.0.17672.36512-d718a8fd1fe6</code> · 生成于 <time datetime="2026-07-23T04:24:10+00:00">2026-07-23 04:24 UTC</time></p><div class="stats"><div class="stat"><span class="stat-label">OSU1 / 2BL</span><span class="stat-value">6.2.11393.0</span></div><div class="stat"><span class="stat-label">Updater 文件</span><span class="stat-value">25</span></div><div class="stat"><span class="stat-label">新增 / 修改 / 删除</span><span class="stat-value">1 / 17 / 0</span></div><div class="stat"><span class="stat-label">异常</span><span class="stat-value">0</span></div></div><p><strong>来源：</strong><a href="https://dn721602.ca.archive.org/0/items/xbox-one-system-update-archive/2014/6.2.11393.0%20%28xb_rel_1408.140808-1753%29%20fre.zip" rel="noreferrer">https://dn721602.ca.archive.org/0/items/xbox-one-system-update-archive/2014/6.2.11393.0%20%28xb_rel_1408.140808-1753%29%20fre.zip</a></p><p><strong>对比版本：</strong>6.2.11274.0</p><p><strong>内容指纹：</strong><code>d718a8fd1fe6fc39d6b4f6ea045a3c1a1b248f7da1dfbde4369e644943f4e91f</code></p><p><strong>原始 updater.xvd：</strong>由 Internet Archive 来源 ZIP 保留 · <a href="https://archive.org/download/xbox-one-system-update-archive/2014/6.2.11393.0%20%28xb_rel_1408.140808-1753%29%20fre.zip" rel="noreferrer">来源 ZIP</a> · ZIP 成员 <code>$SystemUpdate/updater.xvd</code> · 44.22 MiB · SHA-256 <code>feb357b327b2acccaf524af73da99bd8ec8118efecd72f4525f47ed200b0b73e</code> · <a href="https://archive.org/details/xbox-one-system-update-archive" rel="noreferrer">来源归档详情</a></p><p><strong>Updater 解包备份：</strong>已完成逐文件校验 · 25 个文件 · 20.12 MiB · 内容指纹 <code>d718a8fd1fe6fc39d6b4f6ea045a3c1a1b248f7da1dfbde4369e644943f4e91f</code></p><div class="notice"><strong>版本与代号校验通过</strong>未检测到组内版本差异、2BL/OS 偏差或未知平台缩写。</div><h2>1SP / 2SP / 2BL 版本</h2><div class="table-wrap"><table><thead><tr><th>文件</th><th>组</th><th>平台</th><th>目标</th><th>1SP major</th><th>2SP</th><th>2BL</th><th>2BL 编码</th></tr></thead><tbody><tr><td><code>bootkbd.bin</code></td><td>non_bmfs</td><td><strong>kb</strong><br><span class="muted">Zorro B0</span></td><td>DevKit</td><td>3</td><td>3.9.658</td><td>6.2.11393.0</td><td>Durango (Build.QFE.Timestamp)</td></tr><tr><td><code>bootmbd.bin</code></td><td>non_bmfs</td><td><strong>mb</strong><br><span class="muted">Manda / Aldo B0</span></td><td>DevKit</td><td>3</td><td>3.9.658</td><td>6.2.11393.0</td><td>Durango (Build.QFE.Timestamp)</td></tr></tbody></table></div><h2>.bin 文件</h2><div class="table-wrap"><table><thead><tr><th>路径</th><th>状态</th><th>类型</th><th>缩写</th><th>代号</th><th>版本</th><th>大小</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>1smcbl_gb_dev.bin</code></td><td class="change-unchanged">未变化</td><td>通用 .bin</td><td>-</td><td>-</td><td>-</td><td>32.00 KiB</td><td><code>bd9535217096483c</code></td></tr><tr><td><code>Catalog000.bin</code></td><td class="change-modified">修改</td><td>通用 .bin</td><td>-</td><td>-</td><td>-</td><td>12.00 KiB</td><td><code>b345996a153fae12</code></td></tr><tr><td><code>bootkbd.bin</code></td><td class="change-modified">修改</td><td>boot</td><td>kb</td><td>Zorro B0</td><td>3 / 3.9.658 / 6.2.11393.0</td><td>9.33 MiB</td><td><code>32b7f6fdfd640bd7</code></td></tr><tr><td><code>bootmbd.bin</code></td><td class="change-modified">修改</td><td>boot</td><td>mb</td><td>Manda / Aldo B0</td><td>3 / 3.9.658 / 6.2.11393.0</td><td>9.33 MiB</td><td><code>b3ff3c5cae811f8c</code></td></tr></tbody></table></div><h2>新增文件</h2><div class="table-wrap"><table><thead><tr><th>路径</th><th>大小</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>bootanim.dat</code></td><td>12.00 KiB</td><td><code>2c506a3c3d79588a</code></td></tr></tbody></table></div><h2>修改文件</h2><div class="table-wrap"><table><thead><tr><th>路径</th><th>大小</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>Catalog000.bin</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>d2743791df2f -&gt; b345996a153f</code></td></tr><tr><td><code>SettingsTemplate.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>29cc4adbaffa -&gt; 5f47145d9bf2</code></td></tr><tr><td><code>bootkbd.bin</code></td><td>9.33 MiB -&gt; 9.33 MiB</td><td><code>485b9e19f2f6 -&gt; 32b7f6fdfd64</code></td></tr><tr><td><code>bootmbd.bin</code></td><td>9.33 MiB -&gt; 9.33 MiB</td><td><code>2a8b751fcedf -&gt; b3ff3c5cae81</code></td></tr><tr><td><code>era.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>219c9cb44414 -&gt; b95cda36f5d6</code></td></tr><tr><td><code>host.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>2b18fe389bab -&gt; adad4ea1ce7b</code></td></tr><tr><td><code>smcfw_113_dev.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>3c73679aaeb5 -&gt; c9625992663a</code></td></tr><tr><td><code>smcfw_113_rtlA.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>18994d32abb1 -&gt; fdc59b2c8ab4</code></td></tr><tr><td><code>smcfw_113_rtlB.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>893a2c9750c9 -&gt; daf716f82e4a</code></td></tr><tr><td><code>smcfw_124_dev.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>2505fc79ccb5 -&gt; 6f9848112719</code></td></tr><tr><td><code>smcfw_124_rtlB.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>54b2dea3c456 -&gt; 809f4edd710c</code></td></tr><tr><td><code>sosinit.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>9b11d4051071 -&gt; ece25d010a8c</code></td></tr><tr><td><code>sostmpl.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>76a38deb6277 -&gt; 6a24b451ac0b</code></td></tr><tr><td><code>system.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>911845125baa -&gt; 40bf314450a5</code></td></tr><tr><td><code>systemaux.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>1d004aa95d06 -&gt; 7cc3e22be059</code></td></tr><tr><td><code>update.dll</code></td><td>74.00 KiB -&gt; 74.50 KiB</td><td><code>cce04b745989 -&gt; 299488e103a8</code></td></tr><tr><td><code>update2.dll</code></td><td>228.50 KiB -&gt; 229.00 KiB</td><td><code>98df03516174 -&gt; b5c1156b48e6</code></td></tr></tbody></table></div><h2>完整 Updater 清单</h2><details><summary>展开全部文件</summary><div class="table-wrap"><table><thead><tr><th>路径</th><th>类型</th><th>大小</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>1smcbl_gb_dev.bin</code></td><td>bin</td><td>32.00 KiB</td><td><code>bd9535217096483c4572450b903d8ed7cebeef2f423b5e10f69886243a079e53</code></td></tr><tr><td><code>Catalog000.bin</code></td><td>bin</td><td>12.00 KiB</td><td><code>b345996a153fae1264c12453d7eb2b1ebbb3982c7282996350266908c2ce24e7</code></td></tr><tr><td><code>SettingsTemplate.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>5f47145d9bf2fe95a3822fc3d8769be4235c7eb7d56be90be3c4c53574bb38f7</code></td></tr><tr><td><code>bootanim.dat</code></td><td>dat</td><td>12.00 KiB</td><td><code>2c506a3c3d79588afa0b8b1fc361331f7e5ddeeb10d3b97d2a6a998e8a07f606</code></td></tr><tr><td><code>bootkbd.bin</code></td><td>bin</td><td>9.33 MiB</td><td><code>32b7f6fdfd640bd792d7ecf5a0684386960ae30a582944d39c9fff71979e36c0</code></td></tr><tr><td><code>bootmbd.bin</code></td><td>bin</td><td>9.33 MiB</td><td><code>b3ff3c5cae811f8cf3f54236cfb0283dd7a59a9d0b5045da09eadd35716e1aa7</code></td></tr><tr><td><code>era.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>b95cda36f5d68f16f57bfc1877a5075f4fdfff56ff59ddf50668e4bd229d7a58</code></td></tr><tr><td><code>host.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>adad4ea1ce7b88325c0881d41f0c961f1eae9a20f863d6adcab8665a87eb0bda</code></td></tr><tr><td><code>smcfw_113_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>c9625992663a38f7bdc7aae1cf9805987829eddf65bfeb4313a9d10001962be2</code></td></tr><tr><td><code>smcfw_113_rtlA.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>fdc59b2c8ab46a895aec21dff49baa09380e30ab60201900a4b850fff6433a73</code></td></tr><tr><td><code>smcfw_113_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>daf716f82e4a8cdd97084767a01ae4e2155a98bbc2ece23a1a981d843301b5f1</code></td></tr><tr><td><code>smcfw_121_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>25de367c24e47cf316e907699270c990f7af180c2691b5546773388a64a7e43f</code></td></tr><tr><td><code>smcfw_122_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>bd30d99fd1e8cec474bd68b9ff7bb6c78bd9cf03791ac9b0cbda9738de3c355c</code></td></tr><tr><td><code>smcfw_123_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>6fc454db72e3d46b7c34e74f7db8b8c46a609a88b60157f96e96426a8e5163c9</code></td></tr><tr><td><code>smcfw_123_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>43b8305c983869bcb9394d61b3fbb11a7d6b268ac56090be103a8ae85c3a3b13</code></td></tr><tr><td><code>smcfw_124_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>6f9848112719e6edfddacf07098a228f9b55b2b0724253dd1862ae4e25813ae3</code></td></tr><tr><td><code>smcfw_124_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>809f4edd710c0a30575833fca229f2b898f6fd78c4c0a38670cc89c7e3d8d29d</code></td></tr><tr><td><code>smcfw_gb_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>c45d3b4fb33059899621a8785ed5e71c8c422aec395b924229c27db142153064</code></td></tr><tr><td><code>smcfw_gb_rtlA.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>4912c5b5b1f907b97dd73ebbdbfd9f3a5fcbfe9ec4b947da6ab670f091369406</code></td></tr><tr><td><code>sosinit.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>ece25d010a8c42aaf9ba1e7bf23984093e2fb01f8564de1eda7ce0f9f6428593</code></td></tr><tr><td><code>sostmpl.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>6a24b451ac0b01fdf65efa0aa6dea8ca4f7716f60d118ed041c4b4480655ec9c</code></td></tr><tr><td><code>system.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>40bf314450a5510d9a908b6151dd164faebfccccec37d8fd9f33aa76eaf14b2a</code></td></tr><tr><td><code>systemaux.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>7cc3e22be059f7bcb79eb0801e0ed5de85a0b8588168d86eee709ccbc7736a0a</code></td></tr><tr><td><code>update.dll</code></td><td>dll</td><td>74.50 KiB</td><td><code>299488e103a8804f1d2e976b3fefc0c2af405ca09876b645e18dbe58c35e7af7</code></td></tr><tr><td><code>update2.dll</code></td><td>dll</td><td>229.00 KiB</td><td><code>b5c1156b48e6c7d8a4e5d9ada0bbdd8197276fefe336d93e54c29f90b26c32b5</code></td></tr></tbody></table></div></details></main>
+</body>
+</html>
