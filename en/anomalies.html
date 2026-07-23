@@ -14,6 +14,10 @@
 * { box-sizing: border-box; }
 body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
 a { color:var(--accent); overflow-wrap:anywhere; }
+a:focus-visible, summary:focus-visible { outline:3px solid #9bdce5; outline-offset:3px; }
+.skip-link { position:fixed; top:8px; left:8px; z-index:10; transform:translateY(-160%);
+  padding:8px 11px; background:#fff; color:var(--ink); border:2px solid var(--accent); font-weight:700; }
+.skip-link:focus { transform:translateY(0); }
 .topbar { border-bottom:4px solid var(--accent); background:#10191d; color:white; }
 .topbar-inner, main { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
 .topbar-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
@@ -31,8 +35,20 @@ p { margin:7px 0; }
 .stat { min-width:0; padding:14px 16px; border-right:1px solid var(--line); background:var(--soft); }
 .stat:last-child { border-right:0; }
 .stat-label { color:var(--muted); font-size:12px; }
-.stat-value { display:block; margin-top:3px; font-size:18px; font-weight:700; overflow-wrap:anywhere; }
+.stat-value { display:block; margin-top:3px; font-size:18px; font-weight:700; overflow-wrap:anywhere;
+  font-variant-numeric:tabular-nums; }
 .stat-detail { display:block; margin-top:1px; color:var(--muted); font-size:12px; }
+.version-nav { display:flex; align-items:stretch; justify-content:space-between; gap:18px; margin:14px 0 20px; }
+.version-nav.bottom { margin:30px 0 0; padding-top:15px; border-top:1px solid var(--line); }
+.version-nav-link { display:flex; min-width:0; flex-direction:column; line-height:1.35; text-decoration:none; }
+.version-nav-link.next { margin-left:auto; text-align:right; }
+.version-nav-direction { color:var(--muted); font-size:11px; font-weight:650; }
+.version-nav-version { font-weight:700; font-variant-numeric:tabular-nums; }
+.report-meta { display:grid; grid-template-columns:max-content minmax(0,1fr); gap:8px 18px;
+  margin:22px 0; padding:14px 16px; border:1px solid var(--line); background:#fbfcfc; }
+.report-meta dt { color:var(--muted); font-size:12px; font-weight:650; }
+.report-meta dd { min-width:0; margin:0; overflow-wrap:anywhere; }
+.report-meta code, .report-meta a { overflow-wrap:anywhere; word-break:break-word; }
 .notice { border-left:4px solid var(--ok); background:#edf8f2; padding:12px 14px; margin:20px 0; }
 .notice.warning { border-color:var(--warn); background:var(--warn-bg); }
 .notice strong { display:block; }
@@ -42,14 +58,18 @@ p { margin:7px 0; }
 table { width:100%; border-collapse:collapse; min-width:760px; }
 th, td { padding:9px 11px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
 th { background:var(--soft); color:#39484f; font-size:12px; white-space:nowrap; }
+tbody tr:hover { background:#f8fafb; }
 tbody tr:last-child td { border-bottom:0; }
+code, time { font-variant-numeric:tabular-nums; }
 code { font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
 .status { font-weight:700; }
 .status.ok { color:var(--ok); }
 .status.warning, .change-removed { color:var(--warn); }
 .change-added { color:var(--ok); }
 .change-modified { color:var(--modified); }
-.change-section-title { border-bottom-color:currentColor; }
+.change-section-title { border:0; border-left:3px solid currentColor; padding:6px 9px; background:#f7faf9; }
+.change-section-title.change-modified { background:#fff9ec; }
+.change-section-title.change-removed { background:#fff4f3; }
 .muted { color:var(--muted); }
 .firmware-versions { display:inline-flex; min-width:0; flex-direction:column; gap:2px; font-variant-numeric:tabular-nums; }
 .firmware-version { display:grid; grid-template-columns:58px minmax(0,1fr); gap:7px; }
@@ -58,6 +78,9 @@ code { font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-w
 .version-detail { color:var(--muted); font-size:12px; font-weight:500; line-height:1.4; overflow-wrap:anywhere; }
 details { border:1px solid var(--line); padding:11px 13px; }
 summary { cursor:pointer; font-weight:650; }
+@media (min-width:761px) {
+  .table-wrap thead th { position:sticky; top:0; z-index:1; box-shadow:0 1px 0 var(--line); }
+}
 @media (max-width:760px) {
   .topbar-inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; gap:2px; }
   .topbar-actions { width:100%; justify-content:space-between; gap:16px; margin-top:5px; }
@@ -75,12 +98,20 @@ summary { cursor:pointer; font-weight:650; }
   .history-table td:first-child { display:block; background:var(--soft); font-size:16px; font-weight:700; }
   .history-table td:first-child::before { display:none; }
   .history-table tbody tr td:last-child { border-bottom:0; }
+  .report-meta { grid-template-columns:1fr; gap:2px; }
+  .report-meta dd + dt { margin-top:7px; }
   h1 { font-size:24px; }
 }
-@media (max-width:480px) {
+@media (min-width:360px) and (max-width:420px) {
+  .stats .stat:first-child { padding-inline:12px; }
+  .stats .stat:first-child .stat-value { font-size:15px; overflow-wrap:normal; white-space:nowrap; }
+}
+@media (max-width:359px) {
   .stats { grid-template-columns:1fr; }
   .stat { border-right:0; border-bottom:1px solid var(--line); }
   .stat:last-child { border-bottom:0; }
+  .version-nav { flex-direction:column; gap:10px; }
+  .version-nav-link.next { margin-left:0; text-align:left; }
 }
 
 .file-controls { display:grid; grid-template-columns:minmax(240px,1fr) 160px 160px 220px; gap:12px;
@@ -163,16 +194,17 @@ summary { cursor:pointer; font-weight:650; }
 .anomaly-entry[hidden] { display:none; }
 .anomaly-entry > summary { min-height:52px; padding:10px 12px; cursor:pointer; }
 .anomaly-entry[open] > summary { background:#f8fafb; }
-.anomaly-summary-grid { display:grid; grid-template-columns:minmax(260px,1.5fr) minmax(180px,1fr) 90px 220px 90px;
+.anomaly-summary-grid { display:grid; grid-template-columns:minmax(320px,1.8fr) minmax(170px,.8fr) 90px 220px 90px;
   align-items:center; gap:12px; }
 .anomaly-title { min-width:0; font-weight:700; }
-.anomaly-title code { display:block; margin-top:3px; color:var(--muted); font-size:11px; font-weight:500; }
+.anomaly-preview { display:block; margin-top:3px; color:var(--muted); font-size:12px; font-weight:400; line-height:1.4; }
 .anomaly-code, .anomaly-count, .anomaly-range { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
 .anomaly-state { font-weight:700; }
 .anomaly-state.active { color:var(--warn); }
 .anomaly-state.resolved { color:var(--ok); }
 .anomaly-body { padding:14px 16px 18px 34px; border-top:1px solid var(--line); }
 .anomaly-body p { margin:0 0 10px; }
+.anomaly-signature { color:var(--muted); font-size:12px; }
 .anomaly-occurrences { margin:8px 0 0; padding-left:20px; columns:2; column-gap:28px; }
 .anomaly-occurrences li { margin:4px 0; break-inside:avoid; }
 .anomaly-empty { padding:28px 16px; color:var(--muted); text-align:center; }
@@ -244,8 +276,9 @@ summary { cursor:pointer; font-weight:650; }
 </script>
 </head>
 <body>
-  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD Contents and SP Firmware Version Monitoring</div></div><div class="topbar-actions"><a href="index.html">Back to History</a><a class="language-switch" href="../anomalies.html" hreflang="zh-CN" data-language-switch aria-label="切换到中文">中文</a></div></div></header>
-  <main><h1>Anomalies and Unconfirmed Items</h1><p class="lede">Collects version differences, unknown codes, and unconfirmed mappings observed across all snapshots.</p><div class="stats"><div class="stat"><span class="stat-label">Anomaly Types</span><span class="stat-value">8 issues</span></div><div class="stat"><span class="stat-label">Currently Active</span><span class="stat-value status warning">0 issues</span></div><div class="stat"><span class="stat-label">Historical</span><span class="stat-value status ok">8 issues</span></div><div class="stat"><span class="stat-label">Affected Snapshots</span><span class="stat-value">10 snapshots</span></div></div><div class="anomaly-controls" aria-label="Anomaly filters"><div class="control-field"><label class="control-label" for="anomaly-filter-input">Name or Path</label><input class="control-input" id="anomaly-filter-input" type="search" placeholder="Anomalies and Unconfirmed Items" autocomplete="off" spellcheck="false"></div><div class="control-field"><label class="control-label" for="anomaly-state-filter">Status</label><select class="control-select" id="anomaly-state-filter"><option value="all">All states (8)</option><option value="active">Currently active (0)</option><option value="resolved">Historical (8)</option></select></div><div class="control-field"><label class="control-label" for="anomaly-code-filter">Anomaly Code</label><select class="control-select" id="anomaly-code-filter"><option value="all">All types (8)</option><option value="durango_one_sp_major_mismatch">durango_one_sp_major_mismatch (1)</option><option value="durango_two_sp_version_mismatch">durango_two_sp_version_mismatch (5)</option><option value="scarlett_one_sp_major_mismatch">scarlett_one_sp_major_mismatch (1)</option><option value="scarlett_two_sp_version_mismatch">scarlett_two_sp_version_mismatch (1)</option></select></div></div><p class="file-result-status" id="anomaly-result-status" aria-live="polite" data-template="{matches} / {total} anomalies"></p><div class="anomaly-list" id="anomaly-list"><details class="anomaly-entry" data-state="resolved" data-code="durango_one_sp_major_mismatch" data-search="durango_one_sp_major_mismatch
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD Contents and SP Firmware Version Monitoring</div></div><nav class="topbar-actions" aria-label="Updater XVD Contents and SP Firmware Version Monitoring"><a href="index.html">Back to History</a><a class="language-switch" href="../anomalies.html" hreflang="zh-CN" data-language-switch aria-label="切换到中文">中文</a></nav></div></header>
+  <main id="main-content" tabindex="-1"><h1>Anomalies and Unconfirmed Items</h1><p class="lede">Collects version differences, unknown codes, and unconfirmed mappings observed across all snapshots.</p><div class="stats"><div class="stat"><span class="stat-label">Records</span><span class="stat-value">8 issues</span></div><div class="stat"><span class="stat-label">Currently Active</span><span class="stat-value status warning">0 issues</span></div><div class="stat"><span class="stat-label">Historical</span><span class="stat-value status ok">8 issues</span></div><div class="stat"><span class="stat-label">Affected Snapshots</span><span class="stat-value">10 snapshots</span></div></div><div class="anomaly-controls" aria-label="Anomaly filters"><div class="control-field"><label class="control-label" for="anomaly-filter-input">Name or Path</label><input class="control-input" id="anomaly-filter-input" type="search" placeholder="Anomalies and Unconfirmed Items" autocomplete="off" spellcheck="false"></div><div class="control-field"><label class="control-label" for="anomaly-state-filter">Status</label><select class="control-select" id="anomaly-state-filter"><option value="all">All states (8)</option><option value="active">Currently active (0)</option><option value="resolved">Historical (8)</option></select></div><div class="control-field"><label class="control-label" for="anomaly-code-filter">Anomaly Code</label><select class="control-select" id="anomaly-code-filter"><option value="all">All types (4)</option><option value="durango_one_sp_major_mismatch">durango_one_sp_major_mismatch (1)</option><option value="durango_two_sp_version_mismatch">durango_two_sp_version_mismatch (5)</option><option value="scarlett_one_sp_major_mismatch">scarlett_one_sp_major_mismatch (1)</option><option value="scarlett_two_sp_version_mismatch">scarlett_two_sp_version_mismatch (1)</option></select></div></div><p class="file-result-status" id="anomaly-result-status" aria-live="polite" data-template="{matches} / {total} anomalies"></p><div class="anomaly-list" id="anomaly-list"><details class="anomaly-entry" data-state="resolved" data-code="durango_one_sp_major_mismatch" data-search="durango_one_sp_major_mismatch
 1sp major differs within the durango group
 multiple versions detected: 10, 9.
 bootabd.bin
@@ -255,7 +288,7 @@ bootnad.bin
 bootnbd.bin
 bootobd.bin
 bootvbd.bin
-{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;1sp major&quot;, &quot;values&quot;: &quot;10, 9&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">1SP major differs within the Durango group<code>5eed7db760f74967</code></span><span class="anomaly-code">durango_one_sp_major_mismatch</span><span class="anomaly-count">8 appearances</span><span class="anomaly-range">10.0.15063.3054 → 10.0.16299.5101</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 10, 9.</p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (8)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.3054-42c2085ead94.html">10.0.15063.3054</a></li><li><a href="updates/32778.0.15063.4082-2a7c70b15045.html">10.0.15063.4082</a></li><li><a href="updates/32778.0.15063.4103-98d397b0ec94.html">10.0.15063.4103</a></li><li><a href="updates/32778.0.16299.3031-fa00cf935910.html">10.0.16299.3031</a></li><li><a href="updates/32778.0.16299.3036-a3c51e1b1fc0.html">10.0.16299.3036</a></li><li><a href="updates/32778.0.16299.4037-916821b349eb.html">10.0.16299.4037</a></li><li><a href="updates/32778.0.16299.4055-edff8fe79bc3.html">10.0.16299.4055</a></li><li><a href="updates/32778.0.16299.5101-b5d2eecdbf2f.html">10.0.16299.5101</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;1sp major&quot;, &quot;values&quot;: &quot;10, 9&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">1SP major differs within the Durango group<span class="anomaly-preview">Multiple versions detected: 10, 9.</span></span><span class="anomaly-code">durango_one_sp_major_mismatch</span><span class="anomaly-count">8 appearances</span><span class="anomaly-range">10.0.15063.3054 → 10.0.16299.5101</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>5eed7db760f74967</code></p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (8)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.3054-42c2085ead94.html">10.0.15063.3054</a></li><li><a href="updates/32778.0.15063.4082-2a7c70b15045.html">10.0.15063.4082</a></li><li><a href="updates/32778.0.15063.4103-98d397b0ec94.html">10.0.15063.4103</a></li><li><a href="updates/32778.0.16299.3031-fa00cf935910.html">10.0.16299.3031</a></li><li><a href="updates/32778.0.16299.3036-a3c51e1b1fc0.html">10.0.16299.3036</a></li><li><a href="updates/32778.0.16299.4037-916821b349eb.html">10.0.16299.4037</a></li><li><a href="updates/32778.0.16299.4055-edff8fe79bc3.html">10.0.16299.4055</a></li><li><a href="updates/32778.0.16299.5101-b5d2eecdbf2f.html">10.0.16299.5101</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
 2sp differs within the durango group
 multiple versions detected: 10.0.1060, 9.3.1028.
 bootabd.bin
@@ -264,7 +297,7 @@ bootmbd.bin
 bootnad.bin
 bootobd.bin
 bootvbd.bin
-{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1060, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<code>54818321e8f1f5c4</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.3054</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 10.0.1060, 9.3.1028.</p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.3054-42c2085ead94.html">10.0.15063.3054</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1060, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<span class="anomaly-preview">Multiple versions detected: 10.0.1060, 9.3.1028.</span></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.3054</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>54818321e8f1f5c4</code></p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.3054-42c2085ead94.html">10.0.15063.3054</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
 2sp differs within the durango group
 multiple versions detected: 10.0.1084, 9.3.1028.
 bootabd.bin
@@ -274,7 +307,7 @@ bootnad.bin
 bootnbd.bin
 bootobd.bin
 bootvbd.bin
-{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1084, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<code>a4cd92222514143f</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.4082</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 10.0.1084, 9.3.1028.</p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.4082-2a7c70b15045.html">10.0.15063.4082</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1084, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<span class="anomaly-preview">Multiple versions detected: 10.0.1084, 9.3.1028.</span></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.4082</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>a4cd92222514143f</code></p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.4082-2a7c70b15045.html">10.0.15063.4082</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
 2sp differs within the durango group
 multiple versions detected: 9.3.1028, 9.3.1048.
 bootabd.bin
@@ -282,7 +315,7 @@ bootkbd.bin
 bootmbd.bin
 bootnad.bin
 bootvbd.bin
-{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;9.3.1028, 9.3.1048&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<code>d2c42e9e4f0dfc3a</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.2019</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 9.3.1028, 9.3.1048.</p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.2019-af07d4b782e4.html">10.0.15063.2019</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;9.3.1028, 9.3.1048&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<span class="anomaly-preview">Multiple versions detected: 9.3.1028, 9.3.1048.</span></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.2019</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>d2c42e9e4f0dfc3a</code></p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.2019-af07d4b782e4.html">10.0.15063.2019</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
 2sp differs within the durango group
 multiple versions detected: 10.0.1091, 9.3.1028.
 bootabd.bin
@@ -292,7 +325,7 @@ bootnad.bin
 bootnbd.bin
 bootobd.bin
 bootvbd.bin
-{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1091, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<code>d45377319af5d509</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.4103</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 10.0.1091, 9.3.1028.</p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.4103-98d397b0ec94.html">10.0.15063.4103</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1091, 9.3.1028&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<span class="anomaly-preview">Multiple versions detected: 10.0.1091, 9.3.1028.</span></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.15063.4103</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>d45377319af5d509</code></p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.15063.4103-98d397b0ec94.html">10.0.15063.4103</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="durango_two_sp_version_mismatch" data-search="durango_two_sp_version_mismatch
 2sp differs within the durango group
 multiple versions detected: 10.0.1094, 9.3.1033.
 bootabd.bin
@@ -302,21 +335,21 @@ bootnad.bin
 bootnbd.bin
 bootobd.bin
 bootvbd.bin
-{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1094, 9.3.1033&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<code>ed70b812e775e9f4</code></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">5 appearances</span><span class="anomaly-range">10.0.16299.3031 → 10.0.16299.5101</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 10.0.1094, 9.3.1033.</p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (5)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.16299.3031-fa00cf935910.html">10.0.16299.3031</a></li><li><a href="updates/32778.0.16299.3036-a3c51e1b1fc0.html">10.0.16299.3036</a></li><li><a href="updates/32778.0.16299.4037-916821b349eb.html">10.0.16299.4037</a></li><li><a href="updates/32778.0.16299.4055-edff8fe79bc3.html">10.0.16299.4055</a></li><li><a href="updates/32778.0.16299.5101-b5d2eecdbf2f.html">10.0.16299.5101</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="scarlett_one_sp_major_mismatch" data-search="scarlett_one_sp_major_mismatch
+{&quot;group&quot;: &quot;durango&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;10.0.1094, 9.3.1033&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Durango group<span class="anomaly-preview">Multiple versions detected: 10.0.1094, 9.3.1033.</span></span><span class="anomaly-code">durango_two_sp_version_mismatch</span><span class="anomaly-count">5 appearances</span><span class="anomaly-range">10.0.16299.3031 → 10.0.16299.5101</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>ed70b812e775e9f4</code></p><p class="muted">Related files: <code>bootabd.bin</code> / <code>bootkbd.bin</code> / <code>bootmbd.bin</code> / <code>bootnad.bin</code> / <code>bootnbd.bin</code> / <code>bootobd.bin</code> / <code>bootvbd.bin</code></p><strong>Affected snapshots (5)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.16299.3031-fa00cf935910.html">10.0.16299.3031</a></li><li><a href="updates/32778.0.16299.3036-a3c51e1b1fc0.html">10.0.16299.3036</a></li><li><a href="updates/32778.0.16299.4037-916821b349eb.html">10.0.16299.4037</a></li><li><a href="updates/32778.0.16299.4055-edff8fe79bc3.html">10.0.16299.4055</a></li><li><a href="updates/32778.0.16299.5101-b5d2eecdbf2f.html">10.0.16299.5101</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="scarlett_one_sp_major_mismatch" data-search="scarlett_one_sp_major_mismatch
 1sp major differs within the scarlett group
 multiple versions detected: 6, 7.
 bootrad.bin
 bootrbd.bin
 bootsad.bin
 bootsbd.bin
-{&quot;group&quot;: &quot;scarlett&quot;, &quot;label&quot;: &quot;1sp major&quot;, &quot;values&quot;: &quot;6, 7&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">1SP major differs within the Scarlett group<code>6a79d78bd8db1f18</code></span><span class="anomaly-code">scarlett_one_sp_major_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.19041.6287</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 6, 7.</p><p class="muted">Related files: <code>bootrad.bin</code> / <code>bootrbd.bin</code> / <code>bootsad.bin</code> / <code>bootsbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.19041.6287-076ada9795f4.html">10.0.19041.6287</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="scarlett_two_sp_version_mismatch" data-search="scarlett_two_sp_version_mismatch
+{&quot;group&quot;: &quot;scarlett&quot;, &quot;label&quot;: &quot;1sp major&quot;, &quot;values&quot;: &quot;6, 7&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">1SP major differs within the Scarlett group<span class="anomaly-preview">Multiple versions detected: 6, 7.</span></span><span class="anomaly-code">scarlett_one_sp_major_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.19041.6287</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>6a79d78bd8db1f18</code></p><p class="muted">Related files: <code>bootrad.bin</code> / <code>bootrbd.bin</code> / <code>bootsad.bin</code> / <code>bootsbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.19041.6287-076ada9795f4.html">10.0.19041.6287</a></li></ol></div></details><details class="anomaly-entry" data-state="resolved" data-code="scarlett_two_sp_version_mismatch" data-search="scarlett_two_sp_version_mismatch
 2sp differs within the scarlett group
 multiple versions detected: 6.3.2030, 7.3.2073.
 bootrad.bin
 bootrbd.bin
 bootsad.bin
 bootsbd.bin
-{&quot;group&quot;: &quot;scarlett&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;6.3.2030, 7.3.2073&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Scarlett group<code>236594e83825fb66</code></span><span class="anomaly-code">scarlett_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.19041.6287</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p>Multiple versions detected: 6.3.2030, 7.3.2073.</p><p class="muted">Related files: <code>bootrad.bin</code> / <code>bootrbd.bin</code> / <code>bootsad.bin</code> / <code>bootsbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.19041.6287-076ada9795f4.html">10.0.19041.6287</a></li></ol></div></details></div><div class="anomaly-empty" id="anomaly-empty" hidden>No anomalies match the current filters</div></main>
+{&quot;group&quot;: &quot;scarlett&quot;, &quot;label&quot;: &quot;2sp&quot;, &quot;values&quot;: &quot;6.3.2030, 7.3.2073&quot;}"><summary><span class="anomaly-summary-grid"><span class="anomaly-title">2SP differs within the Scarlett group<span class="anomaly-preview">Multiple versions detected: 6.3.2030, 7.3.2073.</span></span><span class="anomaly-code">scarlett_two_sp_version_mismatch</span><span class="anomaly-count">1 appearance</span><span class="anomaly-range">10.0.19041.6287</span><span class="anomaly-state resolved">Historical</span></span></summary><div class="anomaly-body"><p class="anomaly-signature"><strong>Technical signature:</strong> <code>236594e83825fb66</code></p><p class="muted">Related files: <code>bootrad.bin</code> / <code>bootrbd.bin</code> / <code>bootsad.bin</code> / <code>bootsbd.bin</code></p><strong>Affected snapshots (1)</strong><ol class="anomaly-occurrences"><li><a href="updates/32778.0.19041.6287-076ada9795f4.html">10.0.19041.6287</a></li></ol></div></details></div><div class="anomaly-empty" id="anomaly-empty" hidden>No anomalies match the current filters</div></main>
   <script>
 (() => {
   "use strict";
