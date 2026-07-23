@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2310191d'/%3E%3Cpath d='M8 9h5v9c0 3 1 4 3 4s3-1 3-4V9h5v10c0 5-3 8-8 8s-8-3-8-8z' fill='%2300a7bd'/%3E%3C/svg%3E">
+  <link rel="alternate" hreflang="en" href="11507.0.17690.42144-33c04c3a5ab9.html"><link rel="alternate" hreflang="zh-CN" href="../../updates/11507.0.17690.42144-33c04c3a5ab9.html"><link rel="alternate" hreflang="x-default" href="../../updates/11507.0.17690.42144-33c04c3a5ab9.html">
+  <title>OSU1 6.2.11507.0</title>
+  <style>
+:root { color-scheme: light; --ink:#172126; --muted:#5d6b72; --line:#d9e0e3; --paper:#ffffff;
+  --soft:#f4f7f8; --accent:#007c91; --ok:#176b45; --modified:#875600;
+  --warn:#a52a2a; --warn-bg:#fff2f1; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; letter-spacing:0; }
+a { color:var(--accent); overflow-wrap:anywhere; }
+.topbar { border-bottom:4px solid var(--accent); background:#10191d; color:white; }
+.topbar-inner, main { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
+.topbar-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { font-size:20px; font-weight:700; }
+.subtitle { color:#b9c7cc; font-size:13px; }
+.topbar-actions { display:flex; align-items:center; justify-content:flex-end; gap:18px; }
+.language-switch { color:#fff; font-size:13px; font-weight:650; white-space:nowrap; }
+.language-switch:focus-visible { outline:3px solid #57c8d8; outline-offset:3px; }
+main { padding:28px 0 48px; }
+h1 { font-size:28px; line-height:1.2; margin:0 0 8px; }
+h2 { font-size:19px; margin:32px 0 10px; border-bottom:1px solid var(--line); padding-bottom:7px; }
+p { margin:7px 0; }
+.lede { color:var(--muted); margin-bottom:24px; }
+.stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--line); }
+.stat { min-width:0; padding:14px 16px; border-right:1px solid var(--line); background:var(--soft); }
+.stat:last-child { border-right:0; }
+.stat-label { color:var(--muted); font-size:12px; }
+.stat-value { display:block; margin-top:3px; font-size:18px; font-weight:700; overflow-wrap:anywhere; }
+.stat-detail { display:block; margin-top:1px; color:var(--muted); font-size:12px; }
+.notice { border-left:4px solid var(--ok); background:#edf8f2; padding:12px 14px; margin:20px 0; }
+.notice.warning { border-color:var(--warn); background:var(--warn-bg); }
+.notice strong { display:block; }
+.anomaly { padding:11px 0; border-bottom:1px solid #f0c9c5; }
+.anomaly:last-child { border-bottom:0; }
+.table-wrap { overflow-x:auto; border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; min-width:760px; }
+th, td { padding:9px 11px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
+th { background:var(--soft); color:#39484f; font-size:12px; white-space:nowrap; }
+tbody tr:last-child td { border-bottom:0; }
+code { font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
+.status { font-weight:700; }
+.status.ok { color:var(--ok); }
+.status.warning, .change-removed { color:var(--warn); }
+.change-added { color:var(--ok); }
+.change-modified { color:var(--modified); }
+.change-section-title { border-bottom-color:currentColor; }
+.muted { color:var(--muted); }
+.firmware-versions { display:inline-flex; min-width:0; flex-direction:column; gap:2px; font-variant-numeric:tabular-nums; }
+.firmware-version { display:grid; grid-template-columns:58px minmax(0,1fr); gap:7px; }
+.firmware-version-label { color:var(--muted); font-size:11px; font-weight:650; }
+.version-stack { display:inline-flex; min-width:0; flex-direction:column; gap:1px; font-variant-numeric:tabular-nums; }
+.version-detail { color:var(--muted); font-size:12px; font-weight:500; line-height:1.4; overflow-wrap:anywhere; }
+details { border:1px solid var(--line); padding:11px 13px; }
+summary { cursor:pointer; font-weight:650; }
+@media (max-width:760px) {
+  .topbar-inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; gap:2px; }
+  .topbar-actions { width:100%; justify-content:space-between; gap:16px; margin-top:5px; }
+  .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .stat:nth-child(2) { border-right:0; }
+  .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+  .history-wrap { overflow:visible; border:0; }
+  .history-table { min-width:0; }
+  .history-table thead { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .history-table tbody { display:grid; gap:12px; }
+  .history-table tr { display:block; border:1px solid var(--line); }
+  .history-table td { display:grid; grid-template-columns:96px minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); }
+  .history-table tbody tr:last-child td { border-bottom:1px solid var(--line); }
+  .history-table td::before { content:attr(data-label); color:var(--muted); font-size:12px; font-weight:650; }
+  .history-table td:first-child { display:block; background:var(--soft); font-size:16px; font-weight:700; }
+  .history-table td:first-child::before { display:none; }
+  .history-table tbody tr td:last-child { border-bottom:0; }
+  h1 { font-size:24px; }
+}
+@media (max-width:480px) {
+  .stats { grid-template-columns:1fr; }
+  .stat { border-right:0; border-bottom:1px solid var(--line); }
+  .stat:last-child { border-bottom:0; }
+}
+</style>
+  <script>
+(() => {
+  "use strict";
+  const currentLocale = "en";
+  const targetLocale = "zh-CN";
+  const alternateHref = "../../updates/11507.0.17690.42144-33c04c3a5ab9.html";
+  const storageKey = "osu1-archive-language";
+
+  function alternateUrl() {
+    const url = new URL(alternateHref, location.href);
+    url.search = location.search;
+    url.hash = location.hash;
+    return url.href;
+  }
+
+  let storedLocale = "";
+  try {
+    storedLocale = localStorage.getItem(storageKey) || "";
+  } catch (_error) {
+    storedLocale = "";
+  }
+  if (storedLocale !== "zh-CN" && storedLocale !== "en") storedLocale = "";
+  if (currentLocale === "zh-CN") {
+    const browserLocale = String(
+      (navigator.languages && navigator.languages[0]) || navigator.language || ""
+    ).toLowerCase();
+    const wantsEnglish = storedLocale === "en"
+      || (!storedLocale && !browserLocale.startsWith("zh"));
+    if (wantsEnglish) location.replace(alternateUrl());
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const control = document.querySelector("[data-language-switch]");
+    if (!control) return;
+    control.addEventListener("click", (event) => {
+      event.preventDefault();
+      try {
+        localStorage.setItem(storageKey, targetLocale);
+      } catch (_error) {
+        // The explicit language URL still works when storage is unavailable.
+      }
+      location.assign(alternateUrl());
+    });
+  });
+})();
+</script>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD Contents and SP Firmware Version Monitoring</div></div><div class="topbar-actions"><a href="../index.html">Back to History</a><a class="language-switch" href="../../updates/11507.0.17690.42144-33c04c3a5ab9.html" hreflang="zh-CN" data-language-switch aria-label="切换到中文">中文</a></div></div></header>
+  <main><h1>OSU1 6.2.11507.0</h1><p class="lede">Raw XVD Package Encoding <code>11507.0.17690.42144</code> · Full 2BL Version <code>11507.0 - 08/26/2014 20:37:00</code> · Internal Snapshot <code>11507.0.17690.42144-33c04c3a5ab9</code> · Generated <time datetime="2026-07-23T04:24:14+00:00">2026-07-23 04:24 UTC</time></p><div class="stats"><div class="stat"><span class="stat-label">OSU1 / 2BL</span><span class="stat-value"><span class="version-stack">6.2.11507.0<span class="version-detail">2BL 11507.0 - 08/26/2014 20:37:00</span></span></span></div><div class="stat"><span class="stat-label">Updater Files</span><span class="stat-value">27</span></div><div class="stat"><span class="stat-label">Added / Modified / Removed</span><span class="stat-value">2 / 17 / 0</span></div><div class="stat"><span class="stat-label">Anomalies</span><span class="stat-value">0</span></div></div><p><strong>Source:</strong><a href="https://ia600107.us.archive.org/2/items/xbox-one-system-update-archive/2014/6.2.11507.0%20%28xb_rel_1409.140826-2037%29%20fre.zip" rel="noreferrer">https://ia600107.us.archive.org/2/items/xbox-one-system-update-archive/2014/6.2.11507.0%20%28xb_rel_1409.140826-2037%29%20fre.zip</a></p><p><strong>Compared With:</strong><span class="version-stack">6.2.11393.0<span class="version-detail">2BL 11393.0 - 08/08/2014 17:53:00</span></span></p><p><strong>Content Fingerprint:</strong><code>33c04c3a5ab94304f10f006f84771fb04252f248af8e2be7c4700a71a9d4c99b</code></p><p><strong>Original updater.xvd:</strong>Retained in the Internet Archive source ZIP · <a href="https://archive.org/download/xbox-one-system-update-archive/2014/6.2.11507.0%20%28xb_rel_1409.140826-2037%29%20fre.zip" rel="noreferrer">Source ZIP</a> · ZIP Member <code>$SystemUpdate/updater.xvd</code> · 44.22 MiB · SHA-256 <code>4e0df83bf96f23a0e2c8197159d3d93e16a0f670980c2ec62accc627df114005</code> · <a href="https://archive.org/details/xbox-one-system-update-archive" rel="noreferrer">Source Archive Details</a></p><p><strong>Updater Extract Backup:</strong>File-by-file verification complete · 27 files · 20.34 MiB · Content Fingerprint <code>33c04c3a5ab94304f10f006f84771fb04252f248af8e2be7c4700a71a9d4c99b</code></p><div class="notice"><strong>Version and Codename Validation Passed</strong>No group version differences, 2BL/OS mismatches, or unknown platform codes were detected.</div><h2>1SP / 2SP / 2BL Versions</h2><div class="table-wrap"><table><thead><tr><th>File</th><th>Group</th><th>Platform</th><th>Target</th><th>1SP major</th><th>2SP</th><th>2BL</th><th>2BL Encoding</th></tr></thead><tbody><tr><td><code>bootkbd.bin</code></td><td>Durango</td><td><strong>kb</strong><br><span class="muted">Zorro B0</span></td><td>DevKit</td><td>3</td><td>3.9.669</td><td>11507.0 - 08/26/2014 20:37:00</td><td>Durango (Build.QFE.Timestamp)</td></tr><tr><td><code>bootmbd.bin</code></td><td>Durango</td><td><strong>mb</strong><br><span class="muted">Manda / Aldo B0</span></td><td>DevKit</td><td>3</td><td>3.9.669</td><td>11507.0 - 08/26/2014 20:37:00</td><td>Durango (Build.QFE.Timestamp)</td></tr></tbody></table></div><h2>.bin Files</h2><div class="table-wrap"><table><thead><tr><th>Path</th><th>Status</th><th>Type</th><th>Code</th><th>Codename</th><th>Version</th><th>Size</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>1smcbl_gb_dev.bin</code></td><td class="change-unchanged">Unchanged</td><td>Generic .bin</td><td>-</td><td>-</td><td>-</td><td>32.00 KiB</td><td><code>bd9535217096483c</code></td></tr><tr><td><code>Catalog000.bin</code></td><td class="change-modified">Modified</td><td>Generic .bin</td><td>-</td><td>-</td><td>-</td><td>12.00 KiB</td><td><code>7b84948744388d8c</code></td></tr><tr><td><code>bootkbd.bin</code></td><td class="change-modified">Modified</td><td>boot</td><td>kb</td><td>Zorro B0</td><td>3 / 3.9.669 / 11507.0 - 08/26/2014 20:37:00</td><td>9.34 MiB</td><td><code>8fa4683e8495f553</code></td></tr><tr><td><code>bootmbd.bin</code></td><td class="change-modified">Modified</td><td>boot</td><td>mb</td><td>Manda / Aldo B0</td><td>3 / 3.9.669 / 11507.0 - 08/26/2014 20:37:00</td><td>9.34 MiB</td><td><code>fac8fab621b83411</code></td></tr></tbody></table></div><h2 class="change-section-title change-added">Added Files</h2><div class="table-wrap"><table><thead><tr><th>Path</th><th>Size</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>smcfw_131_dev.mng</code></td><td>96.88 KiB</td><td><code>8594e29d6bd736dc</code></td></tr><tr><td><code>smcfw_141_dev.mng</code></td><td>96.88 KiB</td><td><code>6bc3be3fc5d103a1</code></td></tr></tbody></table></div><h2 class="change-section-title change-modified">Modified Files</h2><div class="table-wrap"><table><thead><tr><th>Path</th><th>Size</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>Catalog000.bin</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>b345996a153f -&gt; 7b8494874438</code></td></tr><tr><td><code>SettingsTemplate.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>5f47145d9bf2 -&gt; cdadc2fb015f</code></td></tr><tr><td><code>bootkbd.bin</code></td><td>9.33 MiB -&gt; 9.34 MiB</td><td><code>32b7f6fdfd64 -&gt; 8fa4683e8495</code></td></tr><tr><td><code>bootmbd.bin</code></td><td>9.33 MiB -&gt; 9.34 MiB</td><td><code>b3ff3c5cae81 -&gt; fac8fab621b8</code></td></tr><tr><td><code>era.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>b95cda36f5d6 -&gt; bc0eae47806f</code></td></tr><tr><td><code>host.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>adad4ea1ce7b -&gt; dc829143161b</code></td></tr><tr><td><code>smcfw_113_dev.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>c9625992663a -&gt; 0e2917c45738</code></td></tr><tr><td><code>smcfw_113_rtlA.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>fdc59b2c8ab4 -&gt; 084d5af507d0</code></td></tr><tr><td><code>smcfw_113_rtlB.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>daf716f82e4a -&gt; e77e54babcb1</code></td></tr><tr><td><code>smcfw_124_dev.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>6f9848112719 -&gt; 44b0a5c23ae6</code></td></tr><tr><td><code>smcfw_124_rtlB.mng</code></td><td>96.88 KiB -&gt; 96.88 KiB</td><td><code>809f4edd710c -&gt; a18d94ac1f96</code></td></tr><tr><td><code>sosinit.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>ece25d010a8c -&gt; fb6c086f8bcd</code></td></tr><tr><td><code>sostmpl.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>6a24b451ac0b -&gt; f5510fc5f36d</code></td></tr><tr><td><code>system.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>40bf314450a5 -&gt; f7ca81db0b46</code></td></tr><tr><td><code>systemaux.xvd</code></td><td>12.00 KiB -&gt; 12.00 KiB</td><td><code>7cc3e22be059 -&gt; 213d18e1e10d</code></td></tr><tr><td><code>update.dll</code></td><td>74.50 KiB -&gt; 74.50 KiB</td><td><code>299488e103a8 -&gt; 57816bca3c8d</code></td></tr><tr><td><code>update2.dll</code></td><td>229.00 KiB -&gt; 229.00 KiB</td><td><code>b5c1156b48e6 -&gt; 413e51ca32b6</code></td></tr></tbody></table></div><h2>Complete Updater Inventory</h2><details><summary>Expand All Files</summary><div class="table-wrap"><table><thead><tr><th>Path</th><th>Type</th><th>Size</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>1smcbl_gb_dev.bin</code></td><td>bin</td><td>32.00 KiB</td><td><code>bd9535217096483c4572450b903d8ed7cebeef2f423b5e10f69886243a079e53</code></td></tr><tr><td><code>Catalog000.bin</code></td><td>bin</td><td>12.00 KiB</td><td><code>7b84948744388d8cf25932b3088357833c75f767398ed330d7a2fb5c9aec204b</code></td></tr><tr><td><code>SettingsTemplate.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>cdadc2fb015f9b50325b8535607564edd793fb55f9a846f0e259053f98a4044b</code></td></tr><tr><td><code>bootanim.dat</code></td><td>dat</td><td>12.00 KiB</td><td><code>2c506a3c3d79588afa0b8b1fc361331f7e5ddeeb10d3b97d2a6a998e8a07f606</code></td></tr><tr><td><code>bootkbd.bin</code></td><td>bin</td><td>9.34 MiB</td><td><code>8fa4683e8495f553d619f5657b0cad4e1dcd2200fb575afc94ef10de99149ae4</code></td></tr><tr><td><code>bootmbd.bin</code></td><td>bin</td><td>9.34 MiB</td><td><code>fac8fab621b8341125e912d2ddf72165b0bf600c642d94461dcf672fe84e083e</code></td></tr><tr><td><code>era.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>bc0eae47806f06884dc6044e9793ffa7fe37aec010ac78dd98236ceae60c73b6</code></td></tr><tr><td><code>host.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>dc829143161b750e95a9348b2f8dd8c09041cf67cd7406eb27dee53ee4f8b641</code></td></tr><tr><td><code>smcfw_113_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>0e2917c45738cd057cb75855858d9b29d1a07efeefa9a0ea46b6ad45d9fc6188</code></td></tr><tr><td><code>smcfw_113_rtlA.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>084d5af507d0a831a14a60b8095b1cf7bfebc19a07e4dabba1a1714ca8ebd636</code></td></tr><tr><td><code>smcfw_113_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>e77e54babcb1974a549fb5aa9c057cec110d1ab6fe2a1531d2913fe19580f924</code></td></tr><tr><td><code>smcfw_121_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>25de367c24e47cf316e907699270c990f7af180c2691b5546773388a64a7e43f</code></td></tr><tr><td><code>smcfw_122_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>bd30d99fd1e8cec474bd68b9ff7bb6c78bd9cf03791ac9b0cbda9738de3c355c</code></td></tr><tr><td><code>smcfw_123_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>6fc454db72e3d46b7c34e74f7db8b8c46a609a88b60157f96e96426a8e5163c9</code></td></tr><tr><td><code>smcfw_123_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>43b8305c983869bcb9394d61b3fbb11a7d6b268ac56090be103a8ae85c3a3b13</code></td></tr><tr><td><code>smcfw_124_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>44b0a5c23ae6cf553ec26cccc2f7c622e95b548b20d7c906338e494e6313fd36</code></td></tr><tr><td><code>smcfw_124_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>a18d94ac1f96c69d2d270d7e7c3adfb74d0c941b257437e39fe53f289da91aba</code></td></tr><tr><td><code>smcfw_131_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>8594e29d6bd736dc63aa3ff357adfd249672c0edcfeebd623695201d74d2dc0b</code></td></tr><tr><td><code>smcfw_141_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>6bc3be3fc5d103a193f871fb6783f8a8d2852fc706b05deabae385e22b83ba70</code></td></tr><tr><td><code>smcfw_gb_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>c45d3b4fb33059899621a8785ed5e71c8c422aec395b924229c27db142153064</code></td></tr><tr><td><code>smcfw_gb_rtlA.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>4912c5b5b1f907b97dd73ebbdbfd9f3a5fcbfe9ec4b947da6ab670f091369406</code></td></tr><tr><td><code>sosinit.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>fb6c086f8bcd81190ad546272a70d7baf784816f58ec21ad779ea7069436310f</code></td></tr><tr><td><code>sostmpl.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>f5510fc5f36dc8bac0a24b1103d87d4c59a7b9959eceb7488cc1470b7e145b02</code></td></tr><tr><td><code>system.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>f7ca81db0b466d383d9b1a78a975b4e2455c638fca5990b8bce1db96a0c65e93</code></td></tr><tr><td><code>systemaux.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>213d18e1e10d6358ef8632f33d061e75f89f77d0f38f91647aed4954c71027fd</code></td></tr><tr><td><code>update.dll</code></td><td>dll</td><td>74.50 KiB</td><td><code>57816bca3c8d45db48b5ce204ebe3bf707c733deb6d8efa3535ab5851a2fe879</code></td></tr><tr><td><code>update2.dll</code></td><td>dll</td><td>229.00 KiB</td><td><code>413e51ca32b6bb1dbccfb54afb0b83db2938478bee41d42892bc6268cd1771c9</code></td></tr></tbody></table></div></details></main>
+</body>
+</html>

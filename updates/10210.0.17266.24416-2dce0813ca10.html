@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2310191d'/%3E%3Cpath d='M8 9h5v9c0 3 1 4 3 4s3-1 3-4V9h5v10c0 5-3 8-8 8s-8-3-8-8z' fill='%2300a7bd'/%3E%3C/svg%3E">
+  <link rel="alternate" hreflang="zh-CN" href="10210.0.17266.24416-2dce0813ca10.html"><link rel="alternate" hreflang="en" href="../en/updates/10210.0.17266.24416-2dce0813ca10.html"><link rel="alternate" hreflang="x-default" href="10210.0.17266.24416-2dce0813ca10.html">
   <title>OSU1 6.2.10210.0</title>
   <style>
 :root { color-scheme: light; --ink:#172126; --muted:#5d6b72; --line:#d9e0e3; --paper:#ffffff;
@@ -18,6 +19,9 @@ a { color:var(--accent); overflow-wrap:anywhere; }
 .topbar-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .brand { font-size:20px; font-weight:700; }
 .subtitle { color:#b9c7cc; font-size:13px; }
+.topbar-actions { display:flex; align-items:center; justify-content:flex-end; gap:18px; }
+.language-switch { color:#fff; font-size:13px; font-weight:650; white-space:nowrap; }
+.language-switch:focus-visible { outline:3px solid #57c8d8; outline-offset:3px; }
 main { padding:28px 0 48px; }
 h1 { font-size:28px; line-height:1.2; margin:0 0 8px; }
 h2 { font-size:19px; margin:32px 0 10px; border-bottom:1px solid var(--line); padding-bottom:7px; }
@@ -56,6 +60,7 @@ details { border:1px solid var(--line); padding:11px 13px; }
 summary { cursor:pointer; font-weight:650; }
 @media (max-width:760px) {
   .topbar-inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; gap:2px; }
+  .topbar-actions { width:100%; justify-content:space-between; gap:16px; margin-top:5px; }
   .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .stat:nth-child(2) { border-right:0; }
   .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
@@ -78,9 +83,55 @@ summary { cursor:pointer; font-weight:650; }
   .stat:last-child { border-bottom:0; }
 }
 </style>
+  <script>
+(() => {
+  "use strict";
+  const currentLocale = "zh-CN";
+  const targetLocale = "en";
+  const alternateHref = "../en/updates/10210.0.17266.24416-2dce0813ca10.html";
+  const storageKey = "osu1-archive-language";
+
+  function alternateUrl() {
+    const url = new URL(alternateHref, location.href);
+    url.search = location.search;
+    url.hash = location.hash;
+    return url.href;
+  }
+
+  let storedLocale = "";
+  try {
+    storedLocale = localStorage.getItem(storageKey) || "";
+  } catch (_error) {
+    storedLocale = "";
+  }
+  if (storedLocale !== "zh-CN" && storedLocale !== "en") storedLocale = "";
+  if (currentLocale === "zh-CN") {
+    const browserLocale = String(
+      (navigator.languages && navigator.languages[0]) || navigator.language || ""
+    ).toLowerCase();
+    const wantsEnglish = storedLocale === "en"
+      || (!storedLocale && !browserLocale.startsWith("zh"));
+    if (wantsEnglish) location.replace(alternateUrl());
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const control = document.querySelector("[data-language-switch]");
+    if (!control) return;
+    control.addEventListener("click", (event) => {
+      event.preventDefault();
+      try {
+        localStorage.setItem(storageKey, targetLocale);
+      } catch (_error) {
+        // The explicit language URL still works when storage is unavailable.
+      }
+      location.assign(alternateUrl());
+    });
+  });
+})();
+</script>
 </head>
 <body>
-  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD 内容与 SP 固件版本监测</div></div><a href="../index.html">返回历史索引</a></div></header>
+  <header class="topbar"><div class="topbar-inner"><div><div class="brand">OSU1 Updater Archive</div><div class="subtitle">Updater XVD 内容与 SP 固件版本监测</div></div><div class="topbar-actions"><a href="../index.html">返回历史索引</a><a class="language-switch" href="../en/updates/10210.0.17266.24416-2dce0813ca10.html" hreflang="en" data-language-switch aria-label="Switch to English">English</a></div></div></header>
   <main><h1>OSU1 6.2.10210.0</h1><p class="lede">XVD Package 原始编码 <code>10210.0.17266.24416</code> · 2BL 完整版本 <code>10210.0 - 11/18/2013 11:59:00</code> · 内部快照 <code>10210.0.17266.24416-2dce0813ca10</code> · 生成于 <time datetime="2026-07-22T17:33:22+00:00">2026-07-22 17:33 UTC</time></p><div class="stats"><div class="stat"><span class="stat-label">OSU1 / 2BL</span><span class="stat-value"><span class="version-stack">6.2.10210.0<span class="version-detail">2BL 10210.0 - 11/18/2013 11:59:00</span></span></span></div><div class="stat"><span class="stat-label">Updater 文件</span><span class="stat-value">17</span></div><div class="stat"><span class="stat-label">新增 / 修改 / 删除</span><span class="stat-value"><span class="muted">未比较</span></span></div><div class="stat"><span class="stat-label">异常</span><span class="stat-value">0</span></div></div><p><strong>来源：</strong><a href="https://dn721602.ca.archive.org/0/items/xbox-one-system-update-archive/2013/6.2.10210.0%20%28xb_rel_launch.131118-1159%29.zip" rel="noreferrer">https://dn721602.ca.archive.org/0/items/xbox-one-system-update-archive/2013/6.2.10210.0%20%28xb_rel_launch.131118-1159%29.zip</a></p><p><strong>对比版本：</strong><span class="muted">无上一个版本</span></p><p><strong>内容指纹：</strong><code>2dce0813ca10b29550ac400e94a302b6573ec6be2927d1da704275125b8ab251</code></p><p><strong>原始 updater.xvd：</strong><a href="https://archive.org/download/xbox-one-osu1-updater-xvd-archive/6.2.10210.0/2dce0813ca10/updater.xvd" rel="noreferrer">Internet Archive 下载</a> · 34.26 MiB · SHA-256 <code>389841023f3c2b3b254b9b3ff8a92603f9ebf448c0fc2af68b21201e1c8371f4</code> · <a href="https://archive.org/details/xbox-one-osu1-updater-xvd-archive" rel="noreferrer">归档详情</a></p><p><strong>Updater 解包备份：</strong>已完成逐文件校验 · 17 个文件 · 10.53 MiB · 内容指纹 <code>2dce0813ca10b29550ac400e94a302b6573ec6be2927d1da704275125b8ab251</code></p><div class="notice"><strong>版本与代号校验通过</strong>未检测到组内版本差异、2BL/OS 偏差或未知平台缩写。</div><h2>1SP / 2SP / 2BL 版本</h2><div class="table-wrap"><table><thead><tr><th>文件</th><th>组</th><th>平台</th><th>目标</th><th>1SP major</th><th>2SP</th><th>2BL</th><th>2BL 编码</th></tr></thead><tbody><tr><td><code>bootkbd.bin</code></td><td>Durango</td><td><strong>kb</strong><br><span class="muted">Zorro B0</span></td><td>DevKit</td><td>3</td><td>3.0.457</td><td>10210.0 - 11/18/2013 11:59:00</td><td>Durango (Build.QFE.Timestamp)</td></tr></tbody></table></div><h2>.bin 文件</h2><div class="table-wrap"><table><thead><tr><th>路径</th><th>状态</th><th>类型</th><th>缩写</th><th>代号</th><th>版本</th><th>大小</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>1smcbl_gb_dev.bin</code></td><td class="change-uncompared">未比较</td><td>通用 .bin</td><td>-</td><td>-</td><td>-</td><td>32.00 KiB</td><td><code>bd9535217096483c</code></td></tr><tr><td><code>Catalog000.bin</code></td><td class="change-uncompared">未比较</td><td>通用 .bin</td><td>-</td><td>-</td><td>-</td><td>12.00 KiB</td><td><code>1d28b09fa1086f7d</code></td></tr><tr><td><code>bootkbd.bin</code></td><td class="change-uncompared">未比较</td><td>boot</td><td>kb</td><td>Zorro B0</td><td>3 / 3.0.457 / 10210.0 - 11/18/2013 11:59:00</td><td>9.64 MiB</td><td><code>e293645103f26097</code></td></tr></tbody></table></div><div class="notice"><strong>无上一个版本</strong>当前归档中没有更早的快照，因此不生成文件差异。</div><h2>完整 Updater 清单</h2><details><summary>展开全部文件</summary><div class="table-wrap"><table><thead><tr><th>路径</th><th>类型</th><th>大小</th><th>SHA-256</th></tr></thead><tbody><tr><td><code>1smcbl_gb_dev.bin</code></td><td>bin</td><td>32.00 KiB</td><td><code>bd9535217096483c4572450b903d8ed7cebeef2f423b5e10f69886243a079e53</code></td></tr><tr><td><code>Catalog000.bin</code></td><td>bin</td><td>12.00 KiB</td><td><code>1d28b09fa1086f7d08efaf0ff62fb943190e7ca5992c7e1179258ee9fb9d2425</code></td></tr><tr><td><code>SettingsTemplate.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>5f10b3893e4f762926ec8a2071dd1d2073e6d083cb988a024617c6c47618eced</code></td></tr><tr><td><code>bootkbd.bin</code></td><td>bin</td><td>9.64 MiB</td><td><code>e293645103f26097b94320bf31c8d27dcef622a7a7553ea37e78e714d033200e</code></td></tr><tr><td><code>era.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>c66dbb3b6ebd08cc1e8ed5384873bbb0a4c65ef8c1adb29943f6792b69805968</code></td></tr><tr><td><code>host.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>3510481a5708dc5394a77f1590f3abc0ca013c9fab1f0776cf5dbcf7401559d0</code></td></tr><tr><td><code>smcfw_113_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>79bcc348f95285b417d3ae635e26fed37a508e1eda8011bf416782e147c4a7ae</code></td></tr><tr><td><code>smcfw_113_rtlA.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>7aaa78980a9ed4e57f185be4076ba8d08ff4ceca83de622403b707aa1dd49993</code></td></tr><tr><td><code>smcfw_113_rtlB.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>5868ad0661240b58b43444de040ee11416587c4b9eaef0a4beeb30059a4ac2f8</code></td></tr><tr><td><code>smcfw_gb_dev.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>c45d3b4fb33059899621a8785ed5e71c8c422aec395b924229c27db142153064</code></td></tr><tr><td><code>smcfw_gb_rtlA.mng</code></td><td>mng</td><td>96.88 KiB</td><td><code>4912c5b5b1f907b97dd73ebbdbfd9f3a5fcbfe9ec4b947da6ab670f091369406</code></td></tr><tr><td><code>sosinit.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>000eaea35d6782a4dbd0888fbc33d73263fd1279d766e0b006d435d486438af7</code></td></tr><tr><td><code>sostmpl.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>c3adc6bf3360c2ef27eb641447797dc5cddbca090f1e2bc4a2b4b8abeae6d775</code></td></tr><tr><td><code>system.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>24a9341a22e5ff09633b0f3cbbe7336e3296fa9aa29edcac56576f442ac6a78f</code></td></tr><tr><td><code>systemaux.xvd</code></td><td>xvd</td><td>12.00 KiB</td><td><code>bf05103cd2989a3debc825264cb5a45168213dcaf9c24bd0a30f080e88cab943</code></td></tr><tr><td><code>update.dll</code></td><td>dll</td><td>72.50 KiB</td><td><code>30eb0125b3515df48bc53c94ffd350f856dd2d3eaa2de936d7bbc4b19784121f</code></td></tr><tr><td><code>update2.dll</code></td><td>dll</td><td>228.00 KiB</td><td><code>5eb71923a7eeded7d31d22ebc35091f0b6b37091d90bcc201df8e85c47993e76</code></td></tr></tbody></table></div></details></main>
 </body>
 </html>
